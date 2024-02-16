@@ -25,18 +25,31 @@ class ComicPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
+
               SizedBox(
                 width: 300, 
                 child: ClipRRect( 
                   borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(comic.coverLink)
+                  child: Image.network(
+                    comic.coverLink,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) { return child; }
+
+                      return AspectRatio(
+                        aspectRatio: 21.0 / 29.0,
+                        child: Container(
+                          color: Colors.grey.shade600,
+                          child: const Center(child: CircularProgressIndicator())
+                        )
+                      );
+                    },
+                  )
                 )
               ),
 
-              Text(comic.title),
-              Text("Issue Number: ${comic.issueNumber}"),
-              Text("Date: ${comic.coverDate.day}/${comic.coverDate.month}/${comic.coverDate.year}")
+              Text(comic.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+              Text("${comic.coverDate.day}/${comic.coverDate.month}/${comic.coverDate.year}", 
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18))
             ]
           )
           )

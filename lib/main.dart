@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       // Batman 143: 76194134182814311
       // Ultimate Spider-Man 1: 75960620796100111
-      home: ComicPage(comic: Comic.fromUPC("76194134182814311")),
+      home: ComicPage(comic: Comic.fromUPC("75960620796100111")),
       // home: const HomePage()
     );
   }
