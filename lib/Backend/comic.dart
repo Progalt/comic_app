@@ -1,66 +1,32 @@
-
 import 'dart:convert';
 
+import 'package:comic_app/Backend/comic_database.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-class Series {
-
-  Series();
-
-  String name = ""; 
-  int volumn = 0;
-  int yearBegan = 0;
-
-  List<String> comics = List.empty(growable: true); 
-}
+import 'package:comic_app/Backend/series.dart';
 
 class Comic extends ChangeNotifier {
 
+  Comic();
+
   Comic.fromUPC(String newUPC) {
 
-    if (cachedComics.containsKey(newUPC)) {
-      print("Getting Comic from cache");
-      fromComic(cachedComics[newUPC]!);
-
-      return;
-    }
-
-
-    // If we do a from UPC we want to query it from the API 
-
-    var headers = {
-      'Authorization': 'Basic UHJvZ2FsdDpwNyxlWF5HbjVVbWNLImY=',
-      'Content-Type': 'application/json'
-    };
-
-    String queryLoc = "https://metron.cloud/api/issue/?upc=$newUPC";
-
-    print("Query: $queryLoc");
-
-    var request = http.Request("GET", Uri.parse(queryLoc));
-    request.headers.addAll(headers); 
-
-    request.send().then((response) async {
-      Map<String, dynamic> json =  jsonDecode(await response.stream.bytesToString());
-
-      Map<String, dynamic> issue = json["results"][0];
-
-     
-
-      print("Issue: ${issue["issue"]}");
-      upc = newUPC; 
-      coverLink = issue["image"];
-      title = issue["issue"];
-
-      loaded = true; 
-      cachedComics[upc] = this; 
-      notifyListeners();
-    });
+    ComicDatabase.getFromUPC(newUPC).then((value) { 
+        fromComic(value);
+        notifyListeners();
+      });
   }
 
   Comic.fromComic(Comic comic) {
     fromComic(comic);
+  }
+
+  void fromJSON(Map<String, dynamic> json) {
+    coverLink = json["image"];
+    coverHash = json["cover_hash"];
+    title = json["issue"];
+    issueNumber = int.parse(json["number"]);
+    coverDate = DateTime.parse(json["cover_date"]);
   }
 
   void fromComic(Comic comic) {
@@ -74,15 +40,13 @@ class Comic extends ChangeNotifier {
     series = comic.series;
   }
 
-  bool loaded = false; 
+  bool loaded = false;
   String upc = "";
-  String title = ""; 
+  String title = "";
   String coverLink = "";
-  int issueNumber = 0; 
+  int issueNumber = 0;
   String coverHash = "";
-  DateTime coverDate = DateTime.now(); 
+  DateTime coverDate = DateTime.now();
 
-  Series series = Series(); 
+  Series series = Series();
 }
-
-Map<String, Comic> cachedComics = {}; 
