@@ -1,6 +1,8 @@
 
 
 import 'package:comic_app/Backend/comic.dart';
+import 'package:comic_app/Backend/comic_database.dart';
+import 'package:comic_app/Pages/comic_page.dart';
 import 'package:flutter/material.dart';
 
 class ComicWidget extends StatelessWidget {
@@ -13,9 +15,9 @@ class ComicWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (comic == null) {
       return Padding(
-        padding: const EdgeInsets.only(right: 3.0),
+        padding: const EdgeInsets.only(right: 4.0),
         child: AspectRatio(
-          aspectRatio: 633.0 / 1024.0,
+          aspectRatio: 6.625 / 10.187,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -30,6 +32,36 @@ class ComicWidget extends StatelessWidget {
       );
     }
 
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.only(right: 4.0),
+      child: AspectRatio(
+        aspectRatio: 6.625 / 10.187, 
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: () { 
+            ComicDatabase.fromID(comic!.id).then((value) {
+              Navigator.push(context, MaterialPageRoute(builder:(context) {
+              return ComicPage(comic: value);
+            })); });
+          
+          },
+          child: Ink(
+            width: 140, 
+
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+              
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: Image.network(comic!.coverLink).image)
+            ),
+  
+          )
+        )
+      )
+    );
+    
+
   }
 }

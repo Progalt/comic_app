@@ -1,4 +1,6 @@
 
+import 'package:comic_app/Backend/comic.dart';
+import 'package:comic_app/Backend/comic_database.dart';
 import 'package:comic_app/Widgets/carosel_widget.dart';
 import 'package:comic_app/Widgets/comic_widget.dart';
 import 'package:comic_app/Widgets/shelf_widget.dart';
@@ -14,6 +16,21 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
+  List<Comic> comics = List.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+
+    ComicDatabase.seriesAfterDate(93, "2023-1-1").then((value) {
+      setState(() {
+        comics = value; 
+      });
+    });
+  } 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +38,7 @@ class HomePageState extends State<HomePage> {
         title: const Text("Comics"),
         actions: [
           IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
-          IconButton(onPressed: (){}, icon: const Icon(Icons.shopping_cart)),
+          IconButton(onPressed: (){}, icon: const Icon(Icons.photo_camera)),
           IconButton(onPressed: (){}, icon: const Icon(Icons.person))
         ],
       ),
@@ -35,13 +52,9 @@ class HomePageState extends State<HomePage> {
               //const CaroselWidget(),
 
               Shelf(
-                shelfItems: const [
-                  ComicWidget(),
-                  ComicWidget(),
-                  ComicWidget(),
-                  ComicWidget(),
-                  ComicWidget(),
-                ],
+                shelfItems: List.generate(comics.length, (index) {
+                  return ComicWidget(comic: comics[index]);
+                }),
                 title: "New Releases",
                 viewMore: () {},
               ),
