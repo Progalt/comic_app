@@ -18,6 +18,8 @@ class ComicDatabase {
     'Content-Type': 'application/json'
   };
 
+  static String queryURL = "https://metron.cloud/api";
+
   static Future<int> getIDFromUPC(String newUPC) async {
 
     waitUntilQueryAvailable();
@@ -29,7 +31,7 @@ class ComicDatabase {
       return upcToIDTable[newUPC]!;
     }
 
-    String queryLoc = "https://metron.cloud/api/issue/?upc=$newUPC";
+    String queryLoc = "$queryURL/issue/?upc=$newUPC";
 
     var request = http.Request("GET", Uri.parse(queryLoc));
     request.headers.addAll(headers);
@@ -54,9 +56,7 @@ class ComicDatabase {
 
   static Future<Comic> fromID(int id) async {
 
-    waitUntilQueryAvailable();
-
-    incrementQuery();
+   
 
     Comic comic = Comic(); 
     // See if the comic is cached
@@ -72,10 +72,14 @@ class ComicDatabase {
         comic = Comic();
       }
     }
+    
+    waitUntilQueryAvailable();
+
+    incrementQuery();
 
     // If we do a from UPC we want to query it from the API
 
-    String queryLoc = "https://metron.cloud/api/issue/$id/";
+    String queryLoc = "$queryURL/issue/$id/";
 
     print("Query: $queryLoc");
 
@@ -90,12 +94,6 @@ class ComicDatabase {
     }
 
     Map<String, dynamic> json = jsonDecode(await response.stream.bytesToString());
-
-    // Test if we get any comic book data from the query
-    // if (int.parse(json["count"]) == 0) {
-    //   print("Query returned 0 comics");
-    //   return; 
-    // }
 
     comic.fromJSON(json);
 
@@ -116,7 +114,7 @@ class ComicDatabase {
       toStr = "${to.year}-${to.month}-${to.day}";
     }
 
-    String query = "https://metron.cloud/api/issue/";
+    String query = "$queryURL/api/issue/";
 
     if (twoPoints) {
       query += "?store_date_range_after=$fromStr&store_date_range_before=$toStr";
@@ -130,13 +128,19 @@ class ComicDatabase {
   }
 
   static Future<List<Comic>> fromSeries(int seriesId) async {
-     String query = "https://metron.cloud/api/issue/?series_id=$seriesId";
+     String query = "$queryURL/issue/?series_id=$seriesId";
 
     return queryComics(query);
   }
 
   static Future<List<Comic>> seriesAfterDate(int seriesId, String dateString) {
-    String query = "https://metron.cloud/api/issue/?series_id=$seriesId&store_date_range_after=$dateString";
+    String query = "$queryURL/issue/?series_id=$seriesId&store_date_range_after=$dateString";
+
+    return queryComics(query);
+  }
+
+  static Future<List<Comic>> arc(int arcId) {
+    String query = "$queryURL/arc/$arcId/issue_list/";
 
     return queryComics(query);
   }

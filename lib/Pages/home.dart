@@ -22,7 +22,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    ComicDatabase.seriesAfterDate(93, "2023-1-1").then((value) {
+    ComicDatabase.arc(177).then((value) {
       setState(() {
         comics = value; 
       });

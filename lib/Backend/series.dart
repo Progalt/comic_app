@@ -17,3 +17,7 @@ class Series {
 
   List<String> comics = List.empty(growable: true);
 }
+
+class Arc {
+  
+}

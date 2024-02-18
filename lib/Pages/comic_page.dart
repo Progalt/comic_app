@@ -146,8 +146,29 @@ class ComicPageState extends State<ComicPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${widget.comic.series.name} (vol. ${widget.comic.series.volume}) #${widget.comic.issueNumber}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                    Text(widget.comic.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${widget.comic.series.name} (vol. ${widget.comic.series.volume}) #${widget.comic.issueNumber}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                            Text(widget.comic.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                          ],
+                        ),
+
+                        const Spacer(), 
+
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(15.0)
+                          ),
+                          child: IconButton(onPressed: (){}, icon: Icon(Icons.add)),
+                        )
+                      ],
+                    ),
+                   
 
                     const SizedBox(height: 6.0),
 
