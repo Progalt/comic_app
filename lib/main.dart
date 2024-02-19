@@ -3,8 +3,18 @@ import 'package:comic_app/Pages/comic_page.dart';
 import 'package:comic_app/Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+ Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://xtycrvingymyxlomqdiw.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0eWNydmluZ3lteXhsb21xZGl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgzNjIxNTUsImV4cCI6MjAyMzkzODE1NX0.rKSS9o73qoXaHPRyFSMj6hLq3CLQOX68UzAeu594rXw',
+  );
+
+
   runApp(const MyApp());
 }
 

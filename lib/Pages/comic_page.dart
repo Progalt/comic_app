@@ -5,6 +5,7 @@ import 'package:comic_app/Backend/comic.dart';
 import 'package:comic_app/Backend/creator.dart';
 import 'package:comic_app/Widgets/carosel_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:comic_app/Backend/User.dart';
 
 class ComicPage extends StatefulWidget {
   const ComicPage({ super.key, required this.comic });
@@ -164,7 +165,7 @@ class ComicPageState extends State<ComicPage> {
                             color: Theme.of(context).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(15.0)
                           ),
-                          child: IconButton(onPressed: (){}, icon: Icon(Icons.add)),
+                          child: IconButton(onPressed: (){}, icon: !appUser.isComicInCollection(widget.comic.id) ? const Icon(Icons.add) : const Icon(Icons.check, color: Colors.green,)),
                         )
                       ],
                     ),
