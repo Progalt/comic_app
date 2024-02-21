@@ -4,8 +4,23 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppUser {
 
-  void signInWithPassword(String email, String password) {
+  Future<bool> signInWithPassword(String email, String password) async {
 
+    final AuthResponse response = await Supabase.instance.client.auth.signInWithPassword(
+      email: email, 
+      password: password
+    );
+
+    if (response.user == null || response.session == null) {
+      return false; 
+    }
+
+    supabaseUser = response.user; 
+    supabaseSession = response.session; 
+
+    print("Signed in user: ${supabaseUser!.email!}");
+
+    return true; 
   }
 
   // Returns if the comic is currently within the users comic collection 
