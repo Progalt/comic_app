@@ -165,7 +165,13 @@ class ComicPageState extends State<ComicPage> {
                             color: Theme.of(context).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(15.0)
                           ),
-                          child: IconButton(onPressed: (){}, icon: !appUser.isComicInCollection(widget.comic.id) ? const Icon(Icons.add) : const Icon(Icons.check, color: Colors.green,)),
+                          child: IconButton(onPressed: (){
+                            if (!appUser.isComicInCollection(widget.comic.id, variant: selectedVarient)) {
+                              setState(() {
+                                appUser.addComicToCollection(widget.comic.id, selectedVarient);
+                              });
+                            }
+                          }, icon: !appUser.isComicInCollection(widget.comic.id, variant: selectedVarient) ? const Icon(Icons.add) : const Icon(Icons.check, color: Colors.green,)),
                         )
                       ],
                     ),

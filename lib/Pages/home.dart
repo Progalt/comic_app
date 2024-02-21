@@ -53,7 +53,7 @@ class HomePageState extends State<HomePage> {
 
               Shelf(
                 shelfItems: List.generate(comics.length, (index) {
-                  return ComicWidget(comic: comics[index]);
+                  return ComicWidget(key: comics[index].key, comic: comics[index]);
                 }),
                 title: "New Releases",
                 viewMore: () {},

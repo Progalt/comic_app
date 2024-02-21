@@ -1,6 +1,7 @@
 import 'package:comic_app/Backend/comic.dart';
 import 'package:comic_app/Pages/comic_page.dart';
 import 'package:comic_app/Pages/home.dart';
+import 'package:comic_app/Pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
       // Flash (2023) 1: 74612
       // Batman (2011) 2: 6799
       //home: ComicPage(comic: Comic.fromID(74612)),
-       home: const HomePage()
+       //home: const HomePage()
+       home: const LoginPage()
     );
   }
 }

@@ -16,6 +16,8 @@ class Comic extends ChangeNotifier {
 
   Comic();
 
+  GlobalKey key = GlobalKey();
+
   Comic.fromUPC(String newUPC) {
 
     ComicDatabase.getIDFromUPC(newUPC).then((value) { 
