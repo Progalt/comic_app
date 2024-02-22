@@ -23,6 +23,10 @@ class AppUser {
     return true; 
   }
 
+  void signOut() {
+    Supabase.instance.client.auth.signOut();
+  }
+
   // Returns if the comic is currently within the users comic collection 
   bool isComicInCollection(int id, { int variant = 0 }) {
     return comicFake.containsKey("$id + $variant"); 
